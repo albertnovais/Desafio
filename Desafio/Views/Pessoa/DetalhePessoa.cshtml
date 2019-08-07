@@ -68,10 +68,9 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <b>Data de Nascimento: </b>@Model.Data_nascimento<br />
+                        <b>Data de Nascimento: </b>@Model.Data_nascimento.ToShortDateString()<br />
                         <b>E-mail: </b>@Model.Email<br />
                         <b>Acesso: </b>@Model.Acesso.Nome<br />
-
                     </div>
                 </div>
             </div>
@@ -367,12 +366,9 @@
 
     function AdicionarTelefone() {
         $("#EditarSalvarTelefone").val("Adicionar")
-        
     }
 
     function EditarTelefone(descricao, numero, id) {    
-
-        
         document.getElementById('descricaoTelefone').value = descricao
         document.getElementById('numeroTelefone').value = numero
         $("#numeroTelefone").val(numero).focus

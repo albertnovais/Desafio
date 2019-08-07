@@ -46,8 +46,8 @@ namespace DesafioIATec.Controllers
         public ActionResult ListarPessoa(string Mensagem)
         {
             ViewBag.Mensagem = Mensagem;
-            var lista = bd.Pessoa.ToList();
-            return View(lista);
+            ViewBag.Lista = bd.Pessoa.ToList();
+            return View();
         }
 
         public ActionResult DetalhePessoa(string cpf, string Mensagem)
@@ -57,12 +57,11 @@ namespace DesafioIATec.Controllers
             ViewBag.Descricao = pessoa.Descricao;
             return View(pessoa);
         }
-        public ActionResult CriarPessoa(int? erro)
-        {
-            ViewBag.erro = erro;
-            ViewBag.Lista = bd.Pessoa.ToList();
-            return View();
-        }
+        //public ActionResult CriarPessoa(int? erro)
+        //{
+        //    ViewBag.erro = erro;            
+        //    return View();
+        //}
 
         [HttpPost]
         // Para aceitar o código html vindo do campo Descrição

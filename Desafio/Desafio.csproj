@@ -214,6 +214,7 @@
     <Compile Include="Models\Telefone.cs">
       <DependentUpon>Desafio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Validacao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -396,6 +397,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Pessoa\ListarPessoa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

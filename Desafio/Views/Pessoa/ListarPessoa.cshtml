@@ -1,0 +1,328 @@
+﻿@model Desafio.Models.Validacao
+
+@{
+    ViewBag.Title = "ListarPessoa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Mensagem = ViewBag.Mensagem;
+    var Lista = ViewBag.Lista;
+}
+
+@if (Mensagem == "erro")
+{
+    <div class="alert alert-success col-md-8 " style="margin-top:1%; margin:auto; margin-bottom:1%;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="material-icons">close</i>
+        </button>
+        <span style="font-size: 20px; text-align:center;">Operação Mal Sucedida! Dados já cadastrados</span>
+    </div>
+}
+@if (Mensagem != null)
+{
+    <div class="alert alert-success col-md-8 " style="margin-top:1%; margin:auto; margin-bottom:1%;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="fas fa-times"></i>
+        </button>
+        @if (Mensagem != "erro" && Mensagem != "Pessoa")
+        {
+            <span style="font-size: 20px; text-align:center;">@Mensagem efetuada com sucesso!</span>
+        }
+        @if (Mensagem == "Remoção")
+        {
+            <span style="font-size: 20px; text-align:center;">Pessoa removida com sucesso! </span>
+        }
+    </div>
+}
+<button class="btn btn-primary text-light" style="text-decoration:none;" title="Adicionar Pessoa" data-toggle="modal" data-target="#ModalPessoa" onclick="AdicionarPessoa(), DesabilitarBotao(1, 1)"> <i class="fas fa-plus text-light"> </i> Adicionar Pessoa </button>
+
+<table id="table" class=" display table-striped table table-sm" style="width:100%">
+    <thead>
+        <tr>
+            <th>CPF</th>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>E-mail</th>
+            <th>ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Lista)
+        {
+            <tr>
+                <td>
+                    @item.CPF
+                </td>
+                <td>
+                    @item.Nome
+                </td>
+                <td>
+                    @item.Data_nascimento.ToShortDateString()
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @{
+                        if (item.Telefone.Count != 0)
+                        {
+                            <a href="#" class=" btn-link" style="text-decoration:none" data-toggle="modal" data-target="#ModalTelefone" title="adicione um Telefone" onclick="Telefone('@item.CPF', '@item.Nome')"> <i class="fas fa-phone text-danger"></i></a>
+                        }
+                        else
+                        {
+                            <a href="#" class=" btn-link" style="text-decoration:none" data-toggle="modal" data-target="#ModalTelefone" title="adicione um Telefone" onclick="Telefone('@item.CPF', '@item.Nome')"> <i class="fas fa-phone text-dark"></i> </a>
+                        }
+                        if (item.Endereco.Count != 0)
+                        {
+                            <a href="#" class="btn-link" style="text-decoration:none" data-toggle="modal" data-target="#ModalEndereco" title="adicione um endereço" onclick="Endereco('@item.CPF', '@item.Nome')"> <i class="fas fa-map-marker-alt text-success"></i> </a>
+                        }
+                        else
+                        {
+                            <a href="#" class="btn-link" data-toggle="modal" style="text-decoration:none;" data-target="#ModalEndereco" title="adicione um endereço" onclick="Endereco('@item.CPF', '@item.Nome')"> <i class="fas fa-map-marker-alt text-dark"></i> </a>
+                        }
+                    }
+                    <a href="#" class="btn-link" style="text-decoration:none;" title="Editar Pessoa" data-toggle="modal" data-target="#ModalPessoa" onclick="EditarPessoa('@item.Nome','@item.Email','@item.CPF','@item.Data_nascimento.ToShortDateString()','@item.Descricao')"> <i class="fas fa-edit text-dark"></i> </a>
+                    <a class="btn-link" style="text-decoration:none;" title="Detalhes" href="@Url.Action("DetalhePessoa","Pessoa", new {cpf = item.CPF })"><i class="fas fa-eye text-primary"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal para adicao, edição e exclusão de pessoa-->
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="ModalPessoa" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Editar Pessoa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AcaoPessoa", "Pessoa", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-horizontal" style="margin-bottom:3%;">
+                        <div class="col-md-12">
+                            <div class="card-body row">
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Nome</label>
+                                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @id ="Nome" } })
+                                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Data de Nascimento</label>
+                                    @Html.EditorFor(model => model.Data_nascimento, new { htmlAttributes = new { @class = "form-control", @id = "Nome" } })
+                                    @Html.ValidationMessageFor(model => model.Data_nascimento, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">E-mail</label>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "Email" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">CPF</label>
+                                    @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control", @id = "CPF" } })
+                                    @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
+
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="control-label"> Conte-nos um pouco Sobre Você</label>
+                                    <div class="form-group has-rose bmd-form-group">
+                                        <textarea rows="10" id="mytextarea"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <input type="submit" id="removerPessoa" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
+                    <input type="submit" id="EditarSalvarPessoa" value="Editar" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal para edição e exclusão de Telefone-->
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="ModalTelefone" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Novo Número de <input type="text" disabled style="border: none" class="bg-white" value="" id="nomeTelefone" name="n"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AcaoNumero", "Pessoa", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-horizontal" style="margin-bottom:3%;">
+                        <div class="col-md-12">
+                            <div class="card-body row">
+                                <div class="form-group col-sm-5" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Selecione o Tipo</label>
+                                    <select name="Descricao" type="text" class="form-control">
+                                        <option value="Celular">Celular</option>
+                                        <option value="WhatsApp">WhatsApp</option>
+                                        <option value="Residencial">Residencial</option>
+                                        <option value="Trabalho">Trabalho</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-7" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Número</label>
+                                    @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @id = "CPF" } })
+                                    @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+                                </div>
+                                <input type="text" hidden name="CPF" id="cpfTelefone">
+                                <input type="text" hidden value="Lista" name="retorno">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                    <input type="submit" value="Adicionar" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal para edição e exclusão de Telefone-->
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="ModalEndereco" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Novo Endereço de <input type="text" disabled style="border: none" class="bg-white" value="" id="nomeEndereco" name="n"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AcaoEndereco", "Pessoa", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-horizontal" style="margin-bottom:3%;">
+                        <div class="col-md-12">
+                            <div class="card-body row">
+                                <div class="form-group col-sm-3" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Selecione o Tipo</label>
+                                    <select name="Descricao" type="text" class="form-control">
+                                        <option value="Moradia">Moradia</option>
+                                        <option value="Trabalho">Trabalho</option>
+                                        <option value="Empresa">Empresa</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">País:</label>
+                                    @Html.EditorFor(model => model.Pais, new { htmlAttributes = new { @class = "form-control", @id = "pais" } })
+                                    @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-3" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Cep:</label>
+                                    @Html.EditorFor(model => model.CEP, new { htmlAttributes = new { @class = "form-control", @id = "cep" , @onblur="pesquisacep(this.value);"} })
+                                    @Html.ValidationMessageFor(model => model.CEP, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-2" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Estado:</label>
+                                    @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control", @id = "uf" } })
+                                    @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-4" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Cidade:</label>
+                                    @Html.EditorFor(model => model.Cidade, new { htmlAttributes = new { @class = "form-control", @id = "cidade" } })
+                                    @Html.ValidationMessageFor(model => model.Cidade, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Rua:</label>
+                                    @Html.EditorFor(model => model.Rua, new { htmlAttributes = new { @class = "form-control", @id = "rua" } })
+                                    @Html.ValidationMessageFor(model => model.Rua, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-2" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Numero:</label>
+                                    @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @id = "numero" } })
+                                    @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-5" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Complemento:</label>
+                                    @Html.EditorFor(model => model.Complemento, new { htmlAttributes = new { @class = "form-control", @id = "complemento" } })
+                                    @Html.ValidationMessageFor(model => model.Complemento, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-sm-5" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Bairro:</label>
+                                    @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "form-control", @id = "bairro" } })
+                                    @Html.ValidationMessageFor(model => model.Bairro, "", new { @class = "text-danger" })
+                                </div>
+                                <input type="text" hidden value="" name="CPF" id="cpfEndereco">
+                                <input type="text" hidden value="Lista" name="retorno">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                    <input type="submit" value="Adicionar" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+    function DesabilitarBotao(endereco, telefone) {
+        if (telefone > 0 || endereco > 0) {
+            document.getElementById("removerPessoa").disabled = "disabled"
+        }
+    }
+
+    function AdicionarPessoa() {
+        $("#EditarSalvarPessoa").val("Adicionar")
+        document.getElementById('Datanascimento1').type = 'date'
+        $("#Nome").val("")
+        $("#CPF").val("")
+        $("#Email").val("")
+        $("#Datanascimento1").val("")
+        $("#mytextarea").html("")
+    }
+
+    function EditarPessoa(Nome, Email, CPF, Datanascimento, Descricao) {
+        $("#EditarSalvarPessoa").val("Editar")
+        $("#Nome").val(Nome)
+        $("#CPF").val(CPF)
+        $("#Email").val(Email)
+        document.getElementById('Datanascimento1').type = 'text'
+        $("#Datanascimento1").val(Datanascimento)
+        $("#mytextarea").text = "Teste"
+    }
+
+    function Telefone(cpf, nome) {
+        $("#cpfTelefone").val(cpf);
+        $("#nomeTelefone").val(nome)
+    }
+
+    function Endereco(cpf, nome) {
+        $("#cpfEndereco").val(cpf);
+        $("#nomeEndereco").val(nome)
+    }
+
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

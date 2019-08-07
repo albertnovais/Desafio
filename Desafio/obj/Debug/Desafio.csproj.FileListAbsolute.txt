@@ -116,8 +116,8 @@ C:\Users\alber\source\repos\Desafio\Desafio\bin\pt-br\System.Web.WebPages.Razor.
 C:\Users\alber\source\repos\Desafio\Desafio\bin\pt-br\Microsoft.AspNet.Identity.Core.resources.dll
 C:\Users\alber\source\repos\Desafio\Desafio\bin\pt-br\Microsoft.AspNet.Identity.Owin.resources.dll
 C:\Users\alber\source\repos\Desafio\Desafio\bin\pt-br\Microsoft.AspNet.Identity.EntityFramework.resources.dll
-C:\Users\alber\source\repos\Desafio\Desafio\obj\Debug\Desafio.csprojAssemblyReference.cache
 C:\Users\alber\source\repos\Desafio\Desafio\obj\Debug\Desafio.csproj.CoreCompileInputs.cache
 C:\Users\alber\source\repos\Desafio\Desafio\obj\Debug\Desafio.csproj.CopyComplete
 C:\Users\alber\source\repos\Desafio\Desafio\obj\Debug\Desafio.dll
 C:\Users\alber\source\repos\Desafio\Desafio\obj\Debug\Desafio.pdb
+C:\Users\alber\source\repos\Desafio\Desafio\obj\Debug\Desafio.csprojAssemblyReference.cache

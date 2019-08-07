@@ -11,7 +11,7 @@ namespace Desafio.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Pessoa
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,15 +20,20 @@ namespace Desafio.Models
             this.Endereco = new HashSet<Endereco>();
             this.Telefone = new HashSet<Telefone>();
         }
-    
+
+        [Required(ErrorMessage = "*Campo Obrigatório")]
         public string CPF { get; set; }
+        [Required(ErrorMessage = "O nome do usuário é obrigatório", AllowEmptyStrings = false)]
         public string Nome { get; set; }
+        [DataType(DataType.Date)]
         public System.DateTime Data_nascimento { get; set; }
         public string Descricao { get; set; }
+        [Required(ErrorMessage = "Informe o seu email")]
+        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Informe um email válido...")]
         public string Email { get; set; }
         public string Senha { get; set; }
         public int AcessoId { get; set; }
-    
+
         public virtual Acesso Acesso { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Endereco> Endereco { get; set; }
