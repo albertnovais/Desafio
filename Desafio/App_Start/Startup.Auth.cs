@@ -58,11 +58,11 @@ namespace Desafio
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "86592504379-u4agb1gm9fmn4dcuuuebt5ah1jjjle8j.apps.googleusercontent.com",
+                ClientSecret = "0HRMsjt4YKrkpUhe0ZfICDAc"
+            });
         }
     }
 }
