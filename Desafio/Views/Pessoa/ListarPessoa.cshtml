@@ -79,7 +79,7 @@
                             <a href="#" class="btn-link" data-toggle="modal" style="text-decoration:none;" data-target="#ModalEndereco" title="adicione um endereço" onclick="Endereco('@item.CPF', '@item.Nome')"> <i class="fas fa-map-marker-alt text-dark"></i> </a>
                         }
                     }
-                    <a href="#" class="btn-link" style="text-decoration:none;" title="Editar Pessoa" data-toggle="modal" data-target="#ModalPessoa" onclick="EditarPessoa('@item.Nome','@item.Email','@item.CPF','@item.Data_nascimento.ToShortDateString()','@item.Descricao')"> <i class="fas fa-edit text-dark"></i> </a>
+                    <a href="#" class="btn-link" style="text-decoration:none;" title="Editar Pessoa" data-toggle="modal" data-target="#ModalPessoa" onclick="EditarPessoa('@item.Nome','@item.Email','@item.CPF','@item.Data_nascimento.ToString("yyyy-MM-dd")','@item.Descricao')"> <i class="fas fa-edit text-dark"></i> </a>
                     <a class="btn-link" style="text-decoration:none;" title="Detalhes" href="@Url.Action("DetalhePessoa","Pessoa", new {cpf = item.CPF })"><i class="fas fa-eye text-primary"></i></a>
                 </td>
             </tr>
@@ -107,13 +107,13 @@
                             <div class="card-body row">
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Nome</label>
-                                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @id ="Nome" } })
+                                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @id = "Nome" } })
                                     @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
 
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Data de Nascimento</label>
-                                    @Html.EditorFor(model => model.Data_nascimento, new { htmlAttributes = new { @class = "form-control", @id = "Nome" } })
+                                    @Html.EditorFor(model => model.Data_nascimento, new { htmlAttributes = new { @class = "form-control", @id = "Datanascimento" } })
                                     @Html.ValidationMessageFor(model => model.Data_nascimento, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
@@ -131,7 +131,7 @@
                                 <div class="col-md-12">
                                     <label class="control-label"> Conte-nos um pouco Sobre Você</label>
                                     <div class="form-group has-rose bmd-form-group">
-                                        <textarea rows="10" id="mytextarea"></textarea>
+                                        <textarea name="Descricao" rows="10" id="mytextarea"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@
                                 </div>
                                 <div class="form-group col-sm-7" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Número</label>
-                                    @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @id = "CPF" } })
+                                    @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @id = "" } })
                                     @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
                                 </div>
                                 <input type="text" hidden name="CPF" id="cpfTelefone">
@@ -230,7 +230,7 @@
                                 </div>
                                 <div class="form-group col-sm-3" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Cep:</label>
-                                    @Html.EditorFor(model => model.CEP, new { htmlAttributes = new { @class = "form-control", @id = "cep" , @onblur="pesquisacep(this.value);"} })
+                                    @Html.EditorFor(model => model.CEP, new { htmlAttributes = new { @class = "form-control", @id = "cep", @onblur = "pesquisacep(this.value);" } })
                                     @Html.ValidationMessageFor(model => model.CEP, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-2" style="font-weight:bold;">
@@ -279,7 +279,15 @@
 </div>
 
 
+<script>
+    //tinymce.init({
+    //    selector: '#mytextarea',
+    //    plugins: "image, print, ",
+    //    language: 'pt_BR',
+    //    language_url: "https://localhost:44300/Scripts/pt_BR.js"
+    //});
 
+</script>
 
 
 <script>
@@ -292,23 +300,34 @@
 
     function AdicionarPessoa() {
         $("#EditarSalvarPessoa").val("Adicionar")
-        document.getElementById('Datanascimento1').type = 'date'
+        document.getElementById('Datanascimento').type = 'date'
         $("#Nome").val("")
         $("#CPF").val("")
         $("#Email").val("")
-        $("#Datanascimento1").val("")
-        $("#mytextarea").html("")
+        $("#Datanascimento").val("")
+        $("#mytextarea").val("");
+        
     }
+
+
 
     function EditarPessoa(Nome, Email, CPF, Datanascimento, Descricao) {
         $("#EditarSalvarPessoa").val("Editar")
         $("#Nome").val(Nome)
         $("#CPF").val(CPF)
         $("#Email").val(Email)
-        document.getElementById('Datanascimento1').type = 'text'
-        $("#Datanascimento1").val(Datanascimento)
-        $("#mytextarea").text = "Teste"
+        $("#Datanascimento").val(Datanascimento)
+
+        tinymce.get('mytextarea').setContent(Descricao)
+       
+        
+        //var textarea = document.querySelector("#mytextarea");
+        //var tValue = tinyMCE.get("Descricao").getContent();
+        //textarea.value = tValue;
+
     }
+
+    
 
     function Telefone(cpf, nome) {
         $("#cpfTelefone").val(cpf);
@@ -321,6 +340,7 @@
     }
 
 </script>
+
 
 
 @section Scripts {

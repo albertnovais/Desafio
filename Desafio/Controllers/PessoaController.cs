@@ -8,31 +8,21 @@ using System;
 namespace DesafioIATec.Controllers
 {
     public class PessoaController : Controller
-    {
-        /// <summary>
-        /// Códigos de erro 
-        /// 
-        /// 1: Sucesso
-        /// 2: Erro
-        /// 3: Outros
-        /// 
-        /// Mensagens tratadas nas Views
-        /// 
-        /// </summary>
+    {  
+        
 
         DESAFIO_IATECEntities1 bd = new DESAFIO_IATECEntities1();
-
         string Mensagem = "";
 
         [HttpPost]
         // Para aceitar o código html vindo do campo Descrição
         [ValidateInput(false)]
-        public ActionResult AcaoPessoa(Pessoa pessoa, string acao, string retorno)
+        public ActionResult AcaoPessoa(Pessoa pessoa, string acao)
         {
             if (acao == "Adicionar")
             {
                 Mensagem = CriarPessoa(pessoa);
-                if (Mensagem == "erro")
+                if (Mensagem == "Erro")
                     return RedirectToAction("ListarPessoa", "Pessoa", new { Mensagem }); ;
             }
             else if (acao == "Editar")
@@ -53,16 +43,10 @@ namespace DesafioIATec.Controllers
         public ActionResult DetalhePessoa(string cpf, string Mensagem)
         {
             ViewBag.Mensagem = Mensagem;
-            var pessoa = bd.Pessoa.FirstOrDefault(x => x.CPF == cpf);
-            ViewBag.Descricao = pessoa.Descricao;
-            return View(pessoa);
+            ViewBag.Pessoa = bd.Pessoa.FirstOrDefault(x => x.CPF == cpf);
+            return View();
         }
-        //public ActionResult CriarPessoa(int? erro)
-        //{
-        //    ViewBag.erro = erro;            
-        //    return View();
-        //}
-
+        
         [HttpPost]
         // Para aceitar o código html vindo do campo Descrição
         [ValidateInput(false)]
@@ -182,7 +166,6 @@ namespace DesafioIATec.Controllers
         public string RemoverEndereco(Endereco endereco)
         {
             var end = bd.Endereco.FirstOrDefault(x => x.EnderecoId == endereco.EnderecoId);
-            var cpf = end.CPF;
             bd.Entry(end).State = System.Data.Entity.EntityState.Deleted;
             bd.SaveChanges();
             return "Remoção";

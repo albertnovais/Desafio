@@ -1,9 +1,10 @@
-﻿@model Desafio.Models.Pessoa
+﻿@model Desafio.Models.Validacao
 
 @{
     ViewBag.Title = "DetalhePessoa";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var Mensagem = ViewBag.Mensagem;
+    var Pessoa = ViewBag.Pessoa;
 }
 
 @if (Mensagem == "erro")
@@ -32,20 +33,19 @@
 </div>
 }
 
-
 <div style="margin: 0px">
-    <h4> @Html.DisplayFor(model => model.Nome)</h4>
+    <h4> @Pessoa.Nome</h4>
     <hr />
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalHistoria">
         Sua Historia
     </button>
-    @if (Model.Telefone.Count > 0)
+    @if (Pessoa.Telefone.Count > 0)
     {
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalTelefone" onclick="AdicionarTelefone()">
             Adicionar Telefones
         </button>
     }
-    @if (Model.Endereco.Count > 0)
+    @if (Pessoa.Endereco.Count > 0)
     {
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco()">
             Adicionar Endereços
@@ -68,15 +68,15 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <b>Data de Nascimento: </b>@Model.Data_nascimento.ToShortDateString()<br />
-                        <b>E-mail: </b>@Model.Email<br />
-                        <b>Acesso: </b>@Model.Acesso.Nome<br />
+                        <b>Data de Nascimento: </b>@Pessoa.Data_nascimento.ToShortDateString()<br />
+                        <b>E-mail: </b>@Pessoa.Email<br />
+                        <b>Acesso: </b>@Pessoa.Acesso.Nome<br />
                     </div>
                 </div>
             </div>
         </dd>
         <dd>
-            @if (Model.Telefone.Count == 0)
+            @if (Pessoa.Telefone.Count == 0)
             {
                 <b>
                     Telefones
@@ -86,7 +86,7 @@
                     Adicionar Telefone
                 </button>
 
-            }@if (Model.Telefone.Count > 0)
+            }@if (Pessoa.Telefone.Count > 0)
             {
                 <div class="row">
                     <div class="card border-primary m-2 col-lg-5 p-0">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="card-body">
 
-                            @foreach (var item in Model.Telefone)
+                            @foreach (var item in Pessoa.Telefone)
                             {
                                 <div class="container">
                                     <div class="row">
@@ -121,16 +121,16 @@
         </dt>
 
         <dd>
-            @if (Model.Endereco.Count == 0)
+            @if (Pessoa.Endereco.Count == 0)
             {
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco()">
                     Adicionar Endereços
                 </button>
 
-            }@if (Model.Endereco.Count > 0)
+            }@if (Pessoa.Endereco.Count > 0)
             {
                 <div class="row">
-                    @foreach (var item in Model.Endereco)
+                    @foreach (var item in Pessoa.Endereco)
                     {
                         <div class="card border-primary m-2 col-lg-6 p-0" style="max-width:100%">
                             <div class="card-header">
@@ -172,7 +172,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Raw(ViewBag.Descricao)
+                @Html.Raw(Pessoa.Descricao)
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -202,22 +202,37 @@
 
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Nome</label>
-                                    <input name="Nome" value="@Model.Nome" type="text" class="form-control" id="Telefone" />
+                                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @id = "Nome" } })
+                                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Data de Nascimento</label>
+                                    @Html.EditorFor(model => model.Data_nascimento, new { htmlAttributes = new { @class = "form-control", @id = "Nome" } })
+                                    @Html.ValidationMessageFor(model => model.Data_nascimento, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">E-mail</label>
-                                    <input name="Email" value="@Model.Email" type="text" class="form-control" id="Email" />
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "Email" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">CPF</label>
+                                    <input name="CPF" type="text" disabled="disabled" value="@Pessoa.CPF" />
+                                    @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
+
                                 </div>
 
                                 <div class="col-md-12">
                                     <label class="control-label"> Conte-nos um pouco Sobre Você</label>
                                     <div class="form-group has-rose bmd-form-group">
-                                        <textarea id="mytextarea"  rows="20" name="Descricao">@Model.Descricao</textarea>
+                                        <textarea id="mytextarea" rows="20" name="Descricao">@Pessoa.Descricao</textarea>
                                         @*@Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
 
-                                <input type="text" hidden name="CPF" value="@Model.CPF">
+                                <input type="text" hidden name="CPF" value="@Pessoa.CPF">
                             </div>
                         </div>
                     </div>
@@ -263,10 +278,11 @@
                                 </div>
                                 <div class="form-group col-sm-7" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Número</label>
-                                    <input name="numero" type="text" value="" class="form-control" id="numeroTelefone" />
+                                    @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @id = "numeroTelefone" } })
+                                    @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
                                 </div>
                                 <input name="TelefoneId" type="text" hidden value="" id="id" />
-                                <input type="text" hidden name="CPF" value="@Model.CPF">
+                                <input type="text" hidden name="CPF" value="@Pessoa.CPF">
                             </div>
                         </div>
                     </div>
@@ -310,35 +326,43 @@
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">País:</label>
-                                    <input class="form-control " name="Pais" id="pais" type="text" value="" />
+                                    @Html.EditorFor(model => model.Pais, new { htmlAttributes = new { @class = "form-control", @id = "pais" } })
+                                    @Html.ValidationMessageFor(model => model.Pais, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-3" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Cep:</label>
-                                    <input class="form-control " name="Cep" type="text" id="cep" value="" onblur="pesquisacep(this.value);" />
+                                    @Html.EditorFor(model => model.CEP, new { htmlAttributes = new { @class = "form-control", @id = "cep", @onblur = "pesquisacep(this.value);" } })
+                                    @Html.ValidationMessageFor(model => model.CEP, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-2" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Estado:</label>
-                                    <input class="form-control " name="Estado" type="text" id="uf" value="" />
+                                    @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control", @id = "uf" } })
+                                    @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-4" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Cidade:</label>
-                                    <input class="form-control " name="Cidade" type="text" id="cidade" value="" />
+                                    @Html.EditorFor(model => model.Cidade, new { htmlAttributes = new { @class = "form-control", @id = "cidade" } })
+                                    @Html.ValidationMessageFor(model => model.Cidade, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Rua:</label>
-                                    <input class="form-control " name="Rua" type="text" id="rua" value="" />
+                                    @Html.EditorFor(model => model.Rua, new { htmlAttributes = new { @class = "form-control", @id = "rua" } })
+                                    @Html.ValidationMessageFor(model => model.Rua, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-2" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Numero:</label>
-                                    <input class="form-control " name="Numero" type="text" id="numeroEndereco" value="" />
+                                    @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @id = "numero" } })
+                                    @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-5" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Complemento:</label>
-                                    <input class="form-control " name="Complemento" type="text" id="complemento" value="" />
+                                    @Html.EditorFor(model => model.Complemento, new { htmlAttributes = new { @class = "form-control", @id = "complemento" } })
+                                    @Html.ValidationMessageFor(model => model.Complemento, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-5" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Bairro:</label>
-                                    <input class="form-control " name="Bairro" type="text" id="bairro" value="" />
+                                    @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "form-control", @id = "bairro" } })
+                                    @Html.ValidationMessageFor(model => model.Bairro, "", new { @class = "text-danger" })
                                 </div>
                                 <input type="text" hidden value="" name="EnderecoId" id="enderecoId">
                             </div>
@@ -346,7 +370,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="text" value="@Model.CPF" name="CPF" hidden />
+                    <input type="text" value="@Pessoa.CPF" name="CPF" hidden />
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     <input type="submit" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
                     <input type="submit" id="EditarSalvarEndereco" value="" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
@@ -359,7 +383,7 @@
 <!--Scripts para o preenchimento dos modais-->
 <script>
     function DesabilitarBotao() {
-        if ('@Model.Telefone.Count' > 0 || '@Model.Endereco.Count' > 0) {
+        if ('@Pessoa.Telefone.Count' > 0 || '@Pessoa.Endereco.Count' > 0) {
             document.getElementById("removerPessoa").disabled = "disabled"
         }
     }
