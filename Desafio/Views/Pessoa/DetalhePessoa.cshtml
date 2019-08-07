@@ -1,0 +1,399 @@
+﻿@model WebApplication4.Models.Pessoa
+
+@{
+    ViewBag.Title = "DetalhePessoa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Mensagem = ViewBag.Mensagem;
+}
+
+@if (Mensagem == "erro")
+{
+    <div class="alert alert-success col-md-8 " style="margin-top:1%; margin:auto; margin-bottom:1%;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="material-icons">close</i>
+        </button>
+        <span style="font-size: 20px; text-align:center;">Operação Mal Sucedida!</span>
+    </div>
+}
+@if (Mensagem != null)
+{
+<div class="alert alert-success col-md-8 " style="margin-top:1%; margin:auto; margin-bottom:1%;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <i class="fas fa-times"></i>
+    </button>
+    @if (Mensagem != "erro" && Mensagem != "Pessoa")
+    {
+        <span style="font-size: 20px; text-align:center;">@Mensagem efetuada com sucesso!</span>
+}
+    @if (Mensagem == "Pessoa")
+    {
+        <span style="font-size: 20px; text-align:center;">Nova pessoa criada! Adicione novos números e endereços! </span>
+}
+</div>
+}
+
+
+<div style="margin: 0px">
+    <h4> @Html.DisplayFor(model => model.Nome)</h4>
+    <hr />
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalHistoria">
+        Sua Historia
+    </button>
+    @if (Model.Telefone.Count > 0)
+    {
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalTelefone" onclick="AdicionarTelefone()">
+            Adicionar Telefones
+        </button>
+    }
+    @if (Model.Endereco.Count > 0)
+    {
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco()">
+            Adicionar Endereços
+        </button>
+    }
+    <dl class="dl-horizontal">
+        <dt>
+        </dt>
+        <dd>
+            <div class="row">
+                <div class="card border-primary m-2 col-lg-5 p-0">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm">
+                                Dados Pessoais
+                            </div>
+                            <div class="col-sm" style="text-align:right;">
+                                <a class="btn-link media-right" style="text-decoration:none;" title="Editar Dados" data-toggle="modal" data-target="#ModalPessoa" onclick="DesabilitarBotao()"> <i class="fas fa-edit text-dark"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <b>Data de Nascimento: </b>@Model.Data_nascimento<br />
+                        <b>E-mail: </b>@Model.Email<br />
+                        <b>Acesso: </b>@Model.Acesso.Nome<br />
+
+                    </div>
+                </div>
+            </div>
+        </dd>
+        <dd>
+            @if (Model.Telefone.Count == 0)
+            {
+                <b>
+                    Telefones
+                </b>
+                <br />
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalTelefone" onclick="AdicionarTelefone()">
+                    Adicionar Telefone
+                </button>
+
+            }@if (Model.Telefone.Count > 0)
+            {
+                <div class="row">
+                    <div class="card border-primary m-2 col-lg-5 p-0">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm"> Telefones </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            @foreach (var item in Model.Telefone)
+                            {
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm mb-1">
+                                            <b>@item.Descricao: </b>  @item.Numero
+                                        </div>
+                                        <div class="col-sm" style="text-align:right">
+                                            <a class="btn-link media-right" style="text-decoration:none; margin:0px;" title="Editar Número" data-toggle="modal" data-target="#ModalTelefone" onclick=" EditarTelefone('@item.Descricao', '@item.Numero', '@item.TelefoneId')"> <i class="fas fa-edit text-dark"></i> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </dd>
+        <dt>
+            Endereços
+        </dt>
+
+        <dd>
+            @if (Model.Endereco.Count == 0)
+            {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco()">
+                    Adicionar Endereços
+                </button>
+
+            }@if (Model.Endereco.Count > 0)
+            {
+                <div class="row">
+                    @foreach (var item in Model.Endereco)
+                    {
+                        <div class="card border-primary m-2 col-lg-6 p-0" style="max-width:100%">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        @item.Descricao
+                                    </div>
+                                    <div class="col-sm" style="text-align:right;">
+                                        <a class="btn-link media-right" style="text-decoration:none;" title="Editar Endereço" data-toggle="modal" data-target="#ModalEndereco"
+                                           onclick="EditarEndereco('@item.EnderecoId','@item.Descricao', '@item.Pais', '@item.Estado', '@item.Cidade', '@item.CEP','@item.Bairro', '@item.Rua', '@item.Numero', '@item.Complemento')"> <i class="fas fa-edit text-dark"></i> </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <b>Pais: </b>@item.Pais<br />
+                                <b>CEP: </b>@item.CEP<br />
+                                <b>Estado: </b>@item.Estado<br />
+                                <b>Cidade: </b>@item.Cidade<br />
+                                <b>Bairro: </b>@item.Bairro<br />
+                                <b>Rua: </b>@item.Rua<br />
+                                <b>Complemento:</b>@item.Complemento<br />
+                                <b>Número:</b>@item.Numero<br />
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </dd>
+    </dl>
+</div>
+
+<div class="modal" id="ModalHistoria" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Historia da Vida</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Raw(ViewBag.Descricao)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para edição e exclusão de pessoa-->
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="ModalPessoa" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Editar Pessoa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AcaoPessoa", "Pessoa", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-horizontal" style="margin-bottom:3%;">
+                        <div class="col-md-12">
+                            <div class="card-body row">
+
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Nome</label>
+                                    <input name="Nome" value="@Model.Nome" type="text" class="form-control" id="Telefone" />
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">E-mail</label>
+                                    <input name="Email" value="@Model.Email" type="text" class="form-control" id="Email" />
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="control-label"> Conte-nos um pouco Sobre Você</label>
+                                    <div class="form-group has-rose bmd-form-group">
+                                        <textarea id="mytextarea"  rows="20" name="Descricao">@Model.Descricao</textarea>
+                                        @*@Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+
+                                <input type="text" hidden name="CPF" value="@Model.CPF">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <input type="submit" id="removerPessoa" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
+                    <input type="submit" value="Editar" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para adição, edição e exclusão de telefones-->
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="ModalTelefone" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Editar Número</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AcaoNumero", "Pessoa", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-horizontal" style="margin-bottom:3%;">
+                        <div class="col-md-12">
+                            <div class="card-body row">
+                                <div class="form-group col-sm-5" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Selecione o Tipo</label>
+                                    <select name="Descricao" type="text" class="form-control" id="descricaoTelefone">
+                                        <option value="Celular">Celular</option>
+                                        <option value="WhatsApp">WhatsApp</option>
+                                        <option value="Residencial">Residencial</option>
+                                        <option value="Trabalho">Trabalho</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-7" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Número</label>
+                                    <input name="numero" type="text" value="" class="form-control" id="numeroTelefone" />
+                                </div>
+                                <input name="TelefoneId" type="text" hidden value="" id="id" />
+                                <input type="text" hidden name="CPF" value="@Model.CPF">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <input type="submit" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
+                    <input type="submit" id="EditarSalvarTelefone" name="acao" value="" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal para edição e exclusão de endereços-->
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="ModalEndereco" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Novo Endereço de <input type="text" disabled style="border: none" class="bg-white" value="" id="nomeEndereco" name="n"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AcaoEndereco", "Pessoa", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-horizontal" style="margin-bottom:3%;">
+                        <div class="col-md-12">
+                            <div class="card-body row">
+                                <div class="form-group col-sm-3" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Selecione o Tipo</label>
+                                    <select name="Descricao" type="text" id="descricaoEndereco" class="form-control">
+                                        <option value="Moradia">Moradia</option>
+                                        <option value="Trabalho">Trabalho</option>
+                                        <option value="Empresa">Empresa</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">País:</label>
+                                    <input class="form-control " name="Pais" id="pais" type="text" value="" />
+                                </div>
+                                <div class="form-group col-sm-3" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Cep:</label>
+                                    <input class="form-control " name="Cep" type="text" id="cep" value="" onblur="pesquisacep(this.value);" />
+                                </div>
+                                <div class="form-group col-sm-2" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Estado:</label>
+                                    <input class="form-control " name="Estado" type="text" id="uf" value="" />
+                                </div>
+                                <div class="form-group col-sm-4" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Cidade:</label>
+                                    <input class="form-control " name="Cidade" type="text" id="cidade" value="" />
+                                </div>
+                                <div class="form-group col-sm-6" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Rua:</label>
+                                    <input class="form-control " name="Rua" type="text" id="rua" value="" />
+                                </div>
+                                <div class="form-group col-sm-2" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Numero:</label>
+                                    <input class="form-control " name="Numero" type="text" id="numeroEndereco" value="" />
+                                </div>
+                                <div class="form-group col-sm-5" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Complemento:</label>
+                                    <input class="form-control " name="Complemento" type="text" id="complemento" value="" />
+                                </div>
+                                <div class="form-group col-sm-5" style="font-weight:bold;">
+                                    <label class="bmd-label-floating">Bairro:</label>
+                                    <input class="form-control " name="Bairro" type="text" id="bairro" value="" />
+                                </div>
+                                <input type="text" hidden value="" name="EnderecoId" id="enderecoId">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" value="@Model.CPF" name="CPF" hidden />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <input type="submit" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
+                    <input type="submit" id="EditarSalvarEndereco" value="" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!--Scripts para o preenchimento dos modais-->
+<script>
+    function DesabilitarBotao() {
+        if ('@Model.Telefone.Count' > 0 || '@Model.Endereco.Count' > 0) {
+            document.getElementById("removerPessoa").disabled = "disabled"
+        }
+    }
+
+    function AdicionarTelefone() {
+        $("#EditarSalvarTelefone").val("Adicionar")
+        
+    }
+
+    function EditarTelefone(descricao, numero, id) {    
+
+        
+        document.getElementById('descricaoTelefone').value = descricao
+        document.getElementById('numeroTelefone').value = numero
+        $("#numeroTelefone").val(numero).focus
+        $("#id").val(id).focus
+        $("#EditarSalvarTelefone").val("Editar")
+    }
+    function AdicionarEndereco() {
+        $("#EditarSalvarEndereco").val("Adicionar")
+    }
+
+    function EditarEndereco(enderecoId, descricao, pais, estado, cidade, cep, bairro, rua, numero, complemento) {
+        $("#EditarSalvarEndereco").val("Editar")
+        document.getElementById('descricaoEndereco').value = descricao
+        $("#pais").val(pais).focus
+        $("#estado").val(estado).focus
+        $("#cidade").val(cidade).focus
+        $("#cep").val(cep).focus
+        $("#bairro").val(bairro).focus
+        $("#rua").val(rua).focus
+        $("#numeroEndereco").val(numero).focus
+        $("#complemento").val(complemento).focus
+        $("#enderecoId").val(enderecoId).focus
+    }
+</script>
