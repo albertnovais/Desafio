@@ -7,26 +7,24 @@
     var Lista = ViewBag.Lista;
 }
 
-@if (Mensagem == "erro")
+@if (Mensagem == "Erro")
 {
-    <div class="alert alert-success col-md-8 " style="margin-top:1%; margin:auto; margin-bottom:1%;">
+    <div class="alert alert-danger col-md-8 " style="margin-top:1%; margin:auto; margin-bottom:1%;">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <i class="material-icons">close</i>
+            <i class="fas fa-times"></i>
         </button>
-        <span style="font-size: 20px; text-align:center;">Operação Mal Sucedida! Dados já cadastrados</span>
+        <span style="font-size: 20px; text-align:center;">Operação Mal Sucedida! E-mail ou CPF já cadastrados</span>
     </div>
 }
-@if (Mensagem != null)
+@if (Mensagem != null && Mensagem != "Erro")
 {
     <div class="alert alert-success col-md-8 " style="margin-top:1%; margin:auto; margin-bottom:1%;">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <i class="fas fa-times"></i>
         </button>
-        @if (Mensagem != "erro")
-        {
+       
             <span style="font-size: 20px; text-align:center;">@Mensagem efetuada com sucesso!</span>
-        }
-
+        
     </div>
 }
 <button class="btn btn-primary text-light" style="text-decoration:none;" title="Adicionar Pessoa" data-toggle="modal" data-target="#ModalPessoa" onclick="AdicionarPessoa(), DesabilitarBotao(1, 1)"> <i class="fas fa-plus text-light"> </i> Adicionar Pessoa </button>
@@ -90,7 +88,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Editar Pessoa</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -308,8 +306,10 @@
         $("#retorno").val("Detalhe")
         $("#Datanascimento").val("")
         $("#mytextarea").val("");
+        $("#exampleModalCenterTitle").text("Adicionar Pessoa");
         document.getElementById('CPF').disabled = false
         document.getElementById('cpf2').disabled = "disabled"
+        tinymce.get('mytextarea').setContent("")
 
     }
 
@@ -320,6 +320,7 @@
         $("#CPF").val(CPF)
         $("#cpf2").val(CPF)
         document.getElementById('CPF').disabled = "disabled"
+        $("#exampleModalCenterTitle").text("Editar Pessoa");
         $("#Email").val(Email)
         $("#Datanascimento").val(Datanascimento)
 
@@ -331,7 +332,6 @@
         //textarea.value = tValue;
 
     }
-
 
 
     function Telefone(cpf, nome) {

@@ -63,7 +63,7 @@
                                 Dados Pessoais
                             </div>
                             <div class="col-sm" style="text-align:right;">
-                                <a class="btn-link media-right" style="text-decoration:none;" title="Editar Dados" data-toggle="modal" data-target="#ModalPessoa" onclick="DesabilitarBotao('removerPessoa'); EditarPessoa()"> <i class="fas fa-edit text-dark"></i> </a>
+                                <a class="btn-link media-right" style="text-decoration:none;" title="Editar Dados" data-toggle="modal" data-target="#ModalPessoa" onclick="EditarPessoa(); DesabilitarBotao('removerPessoa')"> <i class="fas fa-edit text-dark"></i> </a>
                             </div>
                         </div>
                     </div>
@@ -249,7 +249,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Editar Número</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle"><p id="TituloTelefone"></p></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -298,7 +298,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Novo Endereço de <input type="text" disabled style="border: none" class="bg-white" value="" id="nomeEndereco" name="n"></h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle"><p id="TituloEndereco"></p></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -378,7 +378,10 @@
 <!--Scripts para o preenchimento dos modais-->
 <script>
     function DesabilitarBotao(id) {
-        if ('@Pessoa.Telefone.Count' > 0 || '@Pessoa.Endereco.Count' > 0) {
+        
+        if (id == "removerPessoa" && '@Pessoa.Telefone.Count' > 0 || '@Pessoa.Endereco.Count' > 0) {
+            document.getElementById(id).disabled = "disabled"
+        } else {
             document.getElementById(id).disabled = "disabled"
         }
     }
@@ -394,6 +397,7 @@
 
     function AdicionarTelefone() {
         $("#EditarSalvarTelefone").val("Adicionar")
+        $("#TituloTelefone").text("Adicionar Telefone")
     }
 
     function EditarTelefone(descricao, numero, id) {    
@@ -402,11 +406,13 @@
         $("#numeroTelefone").val(numero).focus
         $("#id").val(id).focus
         $("#EditarSalvarTelefone").val("Editar")
+        $("#TituloTelefone").text("Editar Telefone")
         document.getElementById("removerTelefone").disabled = false
         
     }
     function AdicionarEndereco() {
         $("#EditarSalvarEndereco").val("Adicionar")
+        $("#TituloEndereco").text("Adicionar Endereco")
     }
 
     function EditarEndereco(enderecoId, descricao, pais, estado, cidade, cep, bairro, rua, numero, complemento) {
@@ -421,6 +427,7 @@
         $("#numeroEndereco").val(numero).focus
         $("#complemento").val(complemento).focus
         $("#enderecoId").val(enderecoId).focus
+        $("#TituloEndereco").text("Editar Endereco")
         document.getElementById("removerEndereco").disabled = false
     }
 </script>
