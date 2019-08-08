@@ -29,7 +29,7 @@ namespace DesafioIATec.Controllers
                 Mensagem = EditarPessoa(pessoa);
             else
                 Mensagem = RemoverPessoa(pessoa);
-            return RedirectToAction("DetalhePessoa", "Pessoa", new { cpf = pessoa.CPF, Mensagem }); 
+            return RedirectToAction("ListarPessoa", "Pessoa", new { Mensagem }); 
         }
 
         [ValidateInput(false)]
@@ -76,6 +76,7 @@ namespace DesafioIATec.Controllers
         public string RemoverPessoa(Pessoa pessoa)
         {
             var p = bd.Pessoa.FirstOrDefault(x => x.CPF == pessoa.CPF);
+            
             bd.Entry(p).State = System.Data.Entity.EntityState.Deleted;
             bd.SaveChanges();
             return "Remoção";
