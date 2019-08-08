@@ -2,7 +2,7 @@
 
 USE [master]
 GO
-/****** Object:  Database [DESAFIO_IATEC]    Script Date: 06/08/2019 09:15:46 ******/
+/****** Object:  Database [DESAFIO_IATEC]    Script Date: 08/08/2019 13:14:36 ******/
 CREATE DATABASE [DESAFIO_IATEC]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -81,7 +81,7 @@ ALTER DATABASE [DESAFIO_IATEC] SET QUERY_STORE = OFF
 GO
 USE [DESAFIO_IATEC]
 GO
-/****** Object:  Table [dbo].[Acesso]    Script Date: 06/08/2019 09:15:46 ******/
+/****** Object:  Table [dbo].[Acesso]    Script Date: 08/08/2019 13:14:36 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -95,13 +95,13 @@ CREATE TABLE [dbo].[Acesso](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Endereco]    Script Date: 06/08/2019 09:15:46 ******/
+/****** Object:  Table [dbo].[Endereco]    Script Date: 08/08/2019 13:14:36 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Endereco](
-	[CPF] [varchar](11) NOT NULL,
+	[CPF] [varchar](16) NOT NULL,
 	[Estado] [varchar](2) NOT NULL,
 	[Cidade] [varchar](100) NOT NULL,
 	[CEP] [varchar](20) NOT NULL,
@@ -118,18 +118,17 @@ CREATE TABLE [dbo].[Endereco](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Pessoa]    Script Date: 06/08/2019 09:15:46 ******/
+/****** Object:  Table [dbo].[Pessoa]    Script Date: 08/08/2019 13:14:36 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Pessoa](
-	[CPF] [varchar](11) NOT NULL,
+	[CPF] [varchar](16) NOT NULL,
 	[Nome] [varchar](150) NOT NULL,
 	[Data_nascimento] [date] NOT NULL,
 	[Descricao] [varchar](max) NULL,
 	[Email] [varchar](150) NOT NULL,
-	[Senha] [varchar](256) NULL,
 	[AcessoId] [int] NOT NULL,
  CONSTRAINT [PK_Pessoa] PRIMARY KEY CLUSTERED 
 (
@@ -137,13 +136,13 @@ CREATE TABLE [dbo].[Pessoa](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Telefone]    Script Date: 06/08/2019 09:15:46 ******/
+/****** Object:  Table [dbo].[Telefone]    Script Date: 08/08/2019 13:14:36 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Telefone](
-	[CPF] [varchar](11) NOT NULL,
+	[CPF] [varchar](16) NOT NULL,
 	[Numero] [varchar](20) NOT NULL,
 	[Descricao] [varchar](50) NOT NULL,
 	[TelefoneId] [int] IDENTITY(1,1) NOT NULL,
