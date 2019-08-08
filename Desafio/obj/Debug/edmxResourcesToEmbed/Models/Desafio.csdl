@@ -6,13 +6,13 @@
     </Key>
     <Property Name="AcessoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Nome" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Pessoa" Relationship="Self.FK_Pessoa_Acesso" FromRole="Acesso" ToRole="Pessoa" />
+    <NavigationProperty Name="Pessoa" Relationship="DESAFIO_IATECModel.FK_Pessoa_Acesso" FromRole="Acesso" ToRole="Pessoa" />
   </EntityType>
   <EntityType Name="Endereco">
     <Key>
       <PropertyRef Name="EnderecoId" />
     </Key>
-    <Property Name="CPF" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CPF" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Estado" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Cidade" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="CEP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
@@ -23,22 +23,7 @@
     <Property Name="Pais" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="EnderecoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Descricao" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="Pessoa" Relationship="Self.FK_Endereco_Pessoa" FromRole="Endereco" ToRole="Pessoa" />
-  </EntityType>
-  <EntityType Name="Pessoa">
-    <Key>
-      <PropertyRef Name="CPF" />
-    </Key>
-    <Property Name="CPF" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Data_nascimento" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Senha" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-    <Property Name="AcessoId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Acesso" Relationship="Self.FK_Pessoa_Acesso" FromRole="Pessoa" ToRole="Acesso" />
-    <NavigationProperty Name="Endereco" Relationship="Self.FK_Endereco_Pessoa" FromRole="Pessoa" ToRole="Endereco" />
-    <NavigationProperty Name="Telefone" Relationship="Self.FK_Telefone_Pessoa" FromRole="Pessoa" ToRole="Telefone" />
+    <NavigationProperty Name="Pessoa" Relationship="DESAFIO_IATECModel.FK_Endereco_Pessoa" FromRole="Endereco" ToRole="Pessoa" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -54,15 +39,48 @@
     <Key>
       <PropertyRef Name="TelefoneId" />
     </Key>
-    <Property Name="CPF" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CPF" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Numero" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Descricao" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="TelefoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="Pessoa" Relationship="Self.FK_Telefone_Pessoa" FromRole="Telefone" ToRole="Pessoa" />
+    <NavigationProperty Name="Pessoa" Relationship="DESAFIO_IATECModel.FK_Telefone_Pessoa" FromRole="Telefone" ToRole="Pessoa" />
+  </EntityType>
+  <EntityContainer Name="DESAFIO_IATECEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Acesso" EntityType="Self.Acesso" />
+    <EntitySet Name="Endereco" EntityType="Self.Endereco" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Telefone" EntityType="Self.Telefone" />
+    <EntitySet Name="Pessoa" EntityType="DESAFIO_IATECModel.Pessoa" />
+    <AssociationSet Name="FK_Pessoa_Acesso" Association="DESAFIO_IATECModel.FK_Pessoa_Acesso">
+      <End Role="Acesso" EntitySet="Acesso" />
+      <End Role="Pessoa" EntitySet="Pessoa" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Endereco_Pessoa" Association="DESAFIO_IATECModel.FK_Endereco_Pessoa">
+      <End Role="Pessoa" EntitySet="Pessoa" />
+      <End Role="Endereco" EntitySet="Endereco" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Telefone_Pessoa" Association="DESAFIO_IATECModel.FK_Telefone_Pessoa">
+      <End Role="Pessoa" EntitySet="Pessoa" />
+      <End Role="Telefone" EntitySet="Telefone" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Pessoa">
+    <Key>
+      <PropertyRef Name="CPF" />
+    </Key>
+    <Property Name="CPF" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+    <Property Name="Nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Data_nascimento" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="AcessoId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Acesso" Relationship="DESAFIO_IATECModel.FK_Pessoa_Acesso" FromRole="Pessoa" ToRole="Acesso" />
+    <NavigationProperty Name="Endereco" Relationship="DESAFIO_IATECModel.FK_Endereco_Pessoa" FromRole="Pessoa" ToRole="Endereco" />
+    <NavigationProperty Name="Telefone" Relationship="DESAFIO_IATECModel.FK_Telefone_Pessoa" FromRole="Pessoa" ToRole="Telefone" />
   </EntityType>
   <Association Name="FK_Pessoa_Acesso">
-    <End Role="Acesso" Type="Self.Acesso" Multiplicity="1" />
-    <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="*" />
+    <End Type="DESAFIO_IATECModel.Acesso" Role="Acesso" Multiplicity="1" />
+    <End Type="DESAFIO_IATECModel.Pessoa" Role="Pessoa" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Acesso">
         <PropertyRef Name="AcessoId" />
@@ -73,8 +91,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Endereco_Pessoa">
-    <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
-    <End Role="Endereco" Type="Self.Endereco" Multiplicity="*" />
+    <End Type="DESAFIO_IATECModel.Pessoa" Role="Pessoa" Multiplicity="1" />
+    <End Type="DESAFIO_IATECModel.Endereco" Role="Endereco" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Pessoa">
         <PropertyRef Name="CPF" />
@@ -85,8 +103,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Telefone_Pessoa">
-    <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
-    <End Role="Telefone" Type="Self.Telefone" Multiplicity="*" />
+    <End Type="DESAFIO_IATECModel.Pessoa" Role="Pessoa" Multiplicity="1" />
+    <End Type="DESAFIO_IATECModel.Telefone" Role="Telefone" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Pessoa">
         <PropertyRef Name="CPF" />
@@ -96,23 +114,4 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="DESAFIO_IATECEntities1" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Acesso" EntityType="Self.Acesso" />
-    <EntitySet Name="Endereco" EntityType="Self.Endereco" />
-    <EntitySet Name="Pessoa" EntityType="Self.Pessoa" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-    <EntitySet Name="Telefone" EntityType="Self.Telefone" />
-    <AssociationSet Name="FK_Pessoa_Acesso" Association="Self.FK_Pessoa_Acesso">
-      <End Role="Acesso" EntitySet="Acesso" />
-      <End Role="Pessoa" EntitySet="Pessoa" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Endereco_Pessoa" Association="Self.FK_Endereco_Pessoa">
-      <End Role="Pessoa" EntitySet="Pessoa" />
-      <End Role="Endereco" EntitySet="Endereco" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Telefone_Pessoa" Association="Self.FK_Telefone_Pessoa">
-      <End Role="Pessoa" EntitySet="Pessoa" />
-      <End Role="Telefone" EntitySet="Telefone" />
-    </AssociationSet>
-  </EntityContainer>
 </Schema>

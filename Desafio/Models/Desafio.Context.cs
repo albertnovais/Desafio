@@ -27,8 +27,8 @@ namespace Desafio.Models
     
         public virtual DbSet<Acesso> Acesso { get; set; }
         public virtual DbSet<Endereco> Endereco { get; set; }
-        public virtual DbSet<Pessoa> Pessoa { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Telefone> Telefone { get; set; }
+        public virtual DbSet<Pessoa> Pessoa { get; set; }
     }
 }

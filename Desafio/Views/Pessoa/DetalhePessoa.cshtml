@@ -41,13 +41,13 @@
     </button>
     @if (Pessoa.Telefone.Count > 0)
     {
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalTelefone" onclick="AdicionarTelefone()">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalTelefone" onclick="AdicionarTelefone(); DesabilitarBotao('removerTelefone')">
             Adicionar Telefones
         </button>
     }
     @if (Pessoa.Endereco.Count > 0)
     {
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco()">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco(); DesabilitarBotao('removerEndereco')">
             Adicionar Endereços
         </button>
     }
@@ -63,7 +63,7 @@
                                 Dados Pessoais
                             </div>
                             <div class="col-sm" style="text-align:right;">
-                                <a class="btn-link media-right" style="text-decoration:none;" title="Editar Dados" data-toggle="modal" data-target="#ModalPessoa" onclick="DesabilitarBotao()"> <i class="fas fa-edit text-dark"></i> </a>
+                                <a class="btn-link media-right" style="text-decoration:none;" title="Editar Dados" data-toggle="modal" data-target="#ModalPessoa" onclick="DesabilitarBotao('removerPessoa'); EditarPessoa()"> <i class="fas fa-edit text-dark"></i> </a>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     Telefones
                 </b>
                 <br />
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalTelefone" onclick="AdicionarTelefone()">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalTelefone" onclick="AdicionarTelefone(); DesabilitarBotao('removerTelefone')">
                     Adicionar Telefone
                 </button>
 
@@ -123,7 +123,7 @@
         <dd>
             @if (Pessoa.Endereco.Count == 0)
             {
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco()">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalEndereco" onclick="AdicionarEndereco(); DesabilitarBotao('removerEndereco')">
                     Adicionar Endereços
                 </button>
 
@@ -199,31 +199,28 @@
                     <div class="form-horizontal" style="margin-bottom:3%;">
                         <div class="col-md-12">
                             <div class="card-body row">
-
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Nome</label>
                                     @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @id = "Nome" } })
                                     @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">Data de Nascimento</label>
-                                    @Html.EditorFor(model => model.Data_nascimento, new { htmlAttributes = new { @class = "form-control", @id = "Nome" } })
+                                    @Html.EditorFor(model => model.Data_nascimento, new { htmlAttributes = new { @class = "form-control", @id = "Datanascimento" } })
                                     @Html.ValidationMessageFor(model => model.Data_nascimento, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">E-mail</label>
                                     @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "Email" } })
                                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-
                                 </div>
                                 <div class="form-group col-sm-6" style="font-weight:bold;">
                                     <label class="bmd-label-floating">CPF</label>
-                                    <input name="CPF" type="text" disabled="disabled" value="@Pessoa.CPF" />
+                                    <input name="CPF" type="text" disabled="disabled" value="@Pessoa.CPF" class="form-control" />
+                                    <input name="CPF" type="text" hidden="hidden" value="@Pessoa.CPF" class="form-control" />
+
                                     @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
-
                                 </div>
-
                                 <div class="col-md-12">
                                     <label class="control-label"> Conte-nos um pouco Sobre Você</label>
                                     <div class="form-group has-rose bmd-form-group">
@@ -231,15 +228,13 @@
                                         @*@Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
-
-                                <input type="text" hidden name="CPF" value="@Pessoa.CPF">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <input type="submit" id="removerPessoa" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
+                    <input type="submit" id="removerPessoa" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" onclick="habilitarcpf()"/>
                     <input type="submit" value="Editar" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
                 </div>
             }
@@ -289,7 +284,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <input type="submit" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
+                    <input type="submit" value="Remover" id="removerTelefone" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
                     <input type="submit" id="EditarSalvarTelefone" name="acao" value="" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
                 </div>
             }
@@ -372,7 +367,7 @@
                 <div class="modal-footer">
                     <input type="text" value="@Pessoa.CPF" name="CPF" hidden />
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <input type="submit" value="Remover" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
+                    <input type="submit" value="Remover" id="removerEndereco" name="acao" class="btn btn-danger" style="font-weight:bold; font-family:Arial;" />
                     <input type="submit" id="EditarSalvarEndereco" value="" name="acao" class="btn btn-success" style="font-weight:bold; font-family:Arial;" />
                 </div>
             }
@@ -382,10 +377,19 @@
 
 <!--Scripts para o preenchimento dos modais-->
 <script>
-    function DesabilitarBotao() {
+    function DesabilitarBotao(id) {
         if ('@Pessoa.Telefone.Count' > 0 || '@Pessoa.Endereco.Count' > 0) {
-            document.getElementById("removerPessoa").disabled = "disabled"
+            document.getElementById(id).disabled = "disabled"
         }
+    }
+    function EditarPessoa() {
+        
+        $("#Nome").val('@Pessoa.Nome')
+        $("#CPF").val('@Pessoa.CPF')
+        $("#Email").val('@Pessoa.Email')
+        $("#Datanascimento").val('@Pessoa.Data_nascimento.ToString("yyyy-MM-dd")')
+        
+        
     }
 
     function AdicionarTelefone() {
@@ -398,6 +402,8 @@
         $("#numeroTelefone").val(numero).focus
         $("#id").val(id).focus
         $("#EditarSalvarTelefone").val("Editar")
+        document.getElementById("removerTelefone").disabled = false
+        
     }
     function AdicionarEndereco() {
         $("#EditarSalvarEndereco").val("Adicionar")
@@ -415,5 +421,6 @@
         $("#numeroEndereco").val(numero).focus
         $("#complemento").val(complemento).focus
         $("#enderecoId").val(enderecoId).focus
+        document.getElementById("removerEndereco").disabled = false
     }
 </script>

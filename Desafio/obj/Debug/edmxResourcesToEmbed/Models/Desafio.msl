@@ -26,19 +26,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Pessoa">
-      <EntityTypeMapping TypeName="DESAFIO_IATECModel.Pessoa">
-        <MappingFragment StoreEntitySet="Pessoa">
-          <ScalarProperty Name="CPF" ColumnName="CPF" />
-          <ScalarProperty Name="Nome" ColumnName="Nome" />
-          <ScalarProperty Name="Data_nascimento" ColumnName="Data_nascimento" />
-          <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Senha" ColumnName="Senha" />
-          <ScalarProperty Name="AcessoId" ColumnName="AcessoId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
       <EntityTypeMapping TypeName="DESAFIO_IATECModel.sysdiagrams">
         <MappingFragment StoreEntitySet="sysdiagrams">
@@ -57,6 +44,18 @@
           <ScalarProperty Name="Numero" ColumnName="Numero" />
           <ScalarProperty Name="Descricao" ColumnName="Descricao" />
           <ScalarProperty Name="TelefoneId" ColumnName="TelefoneId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pessoa">
+      <EntityTypeMapping TypeName="DESAFIO_IATECModel.Pessoa">
+        <MappingFragment StoreEntitySet="Pessoa">
+          <ScalarProperty Name="AcessoId" ColumnName="AcessoId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+          <ScalarProperty Name="Data_nascimento" ColumnName="Data_nascimento" />
+          <ScalarProperty Name="Nome" ColumnName="Nome" />
+          <ScalarProperty Name="CPF" ColumnName="CPF" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

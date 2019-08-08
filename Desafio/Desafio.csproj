@@ -290,6 +290,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="IMG\33730325.png" />
+    <Content Include="IMG\Desafio.png" />
     <Content Include="IMG\LOGO_COMPLETO_HORIZONTAL_PRETP-E-AZUL.png" />
     <Content Include="IMG\unnamed.jpg" />
     <Content Include="Models\Desafio.Context.tt">

@@ -11,7 +11,7 @@
     <Key>
       <PropertyRef Name="EnderecoId" />
     </Key>
-    <Property Name="CPF" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="CPF" Type="varchar" MaxLength="16" Nullable="false" />
     <Property Name="Estado" Type="varchar" MaxLength="2" Nullable="false" />
     <Property Name="Cidade" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="CEP" Type="varchar" MaxLength="20" Nullable="false" />
@@ -27,12 +27,11 @@
     <Key>
       <PropertyRef Name="CPF" />
     </Key>
-    <Property Name="CPF" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="CPF" Type="varchar" MaxLength="16" Nullable="false" />
     <Property Name="Nome" Type="varchar" MaxLength="150" Nullable="false" />
     <Property Name="Data_nascimento" Type="date" Nullable="false" />
     <Property Name="Descricao" Type="varchar(max)" />
     <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
-    <Property Name="Senha" Type="varchar" MaxLength="256" />
     <Property Name="AcessoId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="sysdiagrams">
@@ -49,7 +48,7 @@
     <Key>
       <PropertyRef Name="TelefoneId" />
     </Key>
-    <Property Name="CPF" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="CPF" Type="varchar" MaxLength="16" Nullable="false" />
     <Property Name="Numero" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Descricao" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="TelefoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />

@@ -9,6 +9,7 @@ namespace Desafio.Models
     public class Validacao
     {
         [Required(ErrorMessage = "Informe um cpf ")]
+        [MaxLength(16, ErrorMessage ="Voce passou do limite de caracteres, por favor corrija seu cpf!")]
         public string CPF { get; set; }
         [Required(ErrorMessage = "O nome do usuário é obrigatório", AllowEmptyStrings = false)]
         public string Nome { get; set; }

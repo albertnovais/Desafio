@@ -17,19 +17,27 @@ namespace DesafioIATec.Controllers
         [HttpPost]
         // Para aceitar o código html vindo do campo Descrição
         [ValidateInput(false)]
-        public ActionResult AcaoPessoa(Pessoa pessoa, string acao)
+        //Coordena as ações de pessoa
+        public ActionResult AcaoPessoa(Pessoa pessoa, string retorno, string acao)
         {
             if (acao == "Adicionar")
             {
                 Mensagem = CriarPessoa(pessoa);
                 if (Mensagem == "Erro")
-                    return RedirectToAction("ListarPessoa", "Pessoa", new { Mensagem }); ;
+                    return RedirectToAction("ListarPessoa", "Pessoa", new { Mensagem });
             }
             else if (acao == "Editar")
                 Mensagem = EditarPessoa(pessoa);
             else
+            {
                 Mensagem = RemoverPessoa(pessoa);
-            return RedirectToAction("ListarPessoa", "Pessoa", new { Mensagem }); 
+                return RedirectToAction("ListarPessoa", "Pessoa", new { Mensagem });
+            }
+            if (retorno == "Lista")
+            {
+                return RedirectToAction("ListarPessoa", "Pessoa", new { Mensagem });
+            }
+            return RedirectToAction("DetalhePessoa", "Pessoa", new { cpf = pessoa.CPF, Mensagem });
         }
 
         [ValidateInput(false)]
@@ -83,6 +91,7 @@ namespace DesafioIATec.Controllers
         }
 
         [HttpPost]
+        //Coordena as ações de Telefone
         public ActionResult AcaoNumero(Telefone telefone, string retorno, string acao)
         {
             if (acao == "Adicionar")
@@ -125,6 +134,8 @@ namespace DesafioIATec.Controllers
             return "Remoção";
         }
 
+        [HttpPost]
+        //Coordena as ações de Endereco
         public ActionResult AcaoEndereco(Endereco endereco, string retorno, string acao)
         {
             if (acao == "Adicionar")
